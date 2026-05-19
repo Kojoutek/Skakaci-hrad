@@ -1,65 +1,110 @@
-import Image from "next/image";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { CalendarDays, MapPin, Clock } from "lucide-react";
+import { cn } from "@/lib/utils";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="flex flex-col min-h-full">
+      {/* Hero */}
+      <section className="bg-gradient-to-b from-sky-50 to-white py-20 px-4 text-center">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-7xl mb-6">🏰</div>
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Půjčovna skákacího hradu
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="text-xl text-gray-600 mb-8">
+            Udělejte z každé oslavy nezapomenutelný zážitek! Pronajměte si
+            skákací hrad přímo k vám domů.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/rezervace"
+            className={cn(buttonVariants({ size: "lg" }), "text-lg px-8 py-6")}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+            Rezervovat termín
+          </Link>
         </div>
-      </main>
+      </section>
+
+      {/* Info karty */}
+      <section className="py-16 px-4 bg-white">
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card>
+            <CardContent className="pt-6 text-center">
+              <CalendarDays className="w-10 h-10 text-sky-500 mx-auto mb-3" />
+              <h3 className="font-semibold text-lg mb-2">Flexibilní termíny</h3>
+              <p className="text-gray-600 text-sm">
+                Vyberte si libovolné dny v kalendáři. Půjčujeme na celý den.
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6 text-center">
+              <MapPin className="w-10 h-10 text-sky-500 mx-auto mb-3" />
+              <h3 className="font-semibold text-lg mb-2">Vyzvednutí u mě</h3>
+              <p className="text-gray-600 text-sm">
+                Po potvrzení rezervace si hrad vyzvednete osobně a po skončení
+                vrátíte.
+              </p>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardContent className="pt-6 text-center">
+              <Clock className="w-10 h-10 text-sky-500 mx-auto mb-3" />
+              <h3 className="font-semibold text-lg mb-2">100 Kč záloha/den</h3>
+              <p className="text-gray-600 text-sm">
+                Uhraďte zálohu přes QR kód. Po přijetí platby rezervaci
+                potvrdíme.
+              </p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Jak to funguje */}
+      <section className="py-16 px-4 bg-gray-50">
+        <div className="max-w-2xl mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-10">
+            Jak rezervace funguje?
+          </h2>
+          <div className="space-y-4">
+            {[
+              { step: "1", text: "Vyberte dny v rezervačním formuláři" },
+              { step: "2", text: "Vyplňte kontaktní údaje" },
+              { step: "3", text: "Uhraďte zálohu 100 Kč/den přes QR kód" },
+              {
+                step: "4",
+                text: "Po přijetí platby potvrdíme rezervaci a ozveme se vám",
+              },
+              {
+                step: "5",
+                text: "V domluvený den si hrad vyzvednete a po skončení vrátíte",
+              },
+            ].map(({ step, text }) => (
+              <div key={step} className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold shrink-0">
+                  {step}
+                </div>
+                <p className="text-gray-700">{text}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-10">
+            <Link
+              href="/rezervace"
+              className={buttonVariants({ size: "lg" })}
+            >
+              Začít rezervaci
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="mt-auto py-6 text-center text-sm text-gray-400 border-t">
+        <p>Půjčovna skákacího hradu &copy; {new Date().getFullYear()}</p>
+      </footer>
     </div>
   );
 }

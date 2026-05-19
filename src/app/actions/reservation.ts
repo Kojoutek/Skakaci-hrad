@@ -107,9 +107,8 @@ export async function updateReservationStatus(
 
       const dayCount = days.length;
       const rental = 1250 * dayCount;
-      const deposit = r.total_deposit;
-      const doplatek = rental - deposit;
-      const celkem = doplatek + 2300;
+      const celkem = rental + 2300;
+      const dnyText = dayCount === 1 ? "den" : dayCount < 5 ? "dny" : "dní";
 
       await resend.emails.send({
         from: "onboarding@resend.dev",
@@ -130,17 +129,9 @@ export async function updateReservationStatus(
           `---`,
           `Rozpis platby:`,
           ``,
-          `┌───────────────────────────────────┬──────────┐`,
-          `│              Položka              │  Částka  │`,
-          `├───────────────────────────────────┼──────────┤`,
-          `│ Pronájem (1 250 Kč × ${dayCount} ${dayCount === 1 ? "den" : dayCount < 5 ? "dny" : "dní"})${" ".repeat(Math.max(0, 14 - String(dayCount).length))}│ ${rental.toLocaleString("cs")} Kč${" ".repeat(Math.max(0, 5 - String(rental).length))}│`,
-          `├───────────────────────────────────┼──────────┤`,
-          `│ Uhrazená záloha                   │ −${deposit} Kč  │`,
-          `├───────────────────────────────────┼──────────┤`,
-          `│ Vratná kauce                      │ 2 300 Kč │`,
-          `├───────────────────────────────────┼──────────┤`,
-          `│ Doplatek při předání              │ ${doplatek.toLocaleString("cs")} Kč${" ".repeat(Math.max(0, 5 - String(doplatek).length))}│`,
-          `└───────────────────────────────────┴──────────┘`,
+          `Pronájem (1.250 Kč x ${dayCount} ${dnyText}) - ${rental.toLocaleString("cs")} Kč`,
+          `Vratná kauce - 2.300 Kč`,
+          `Uhrazená záloha - -200 Kč`,
           ``,
           `Celkem uhradíte při předání: ${celkem.toLocaleString("cs")} Kč`,
           `Kauce + záloha budou vráceny po odevzdání hradu a kontrole stavu.`,

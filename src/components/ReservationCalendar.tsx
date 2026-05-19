@@ -32,11 +32,7 @@ export default function ReservationCalendar({ bookedDays, selected, onChange }: 
     <div className="flex flex-col items-center gap-3">
       {/* Legenda */}
       <div className="flex flex-wrap gap-4 text-xs text-gray-600 justify-center">
-        <span className="flex items-center gap-1.5">
-          <span className="w-4 h-4 rounded-full bg-gray-200 inline-block" />
-          Minulost
-        </span>
-        <span className="flex items-center gap-1.5">
+<span className="flex items-center gap-1.5">
           <span className="w-4 h-4 rounded-full bg-red-100 border border-red-300 inline-block" />
           Rezervováno
         </span>

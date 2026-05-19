@@ -73,7 +73,7 @@ export default function HomePage() {
               { step: "1", text: "Vyberte dny v rezervačním formuláři" },
               { step: "2", text: "Vyplňte kontaktní údaje" },
               { step: "3", text: "Uhraďte zálohu 200 Kč přes QR kód" },
-              { step: "4", text: "Po přijetí platby potvrdíme rezervaci a ozveme se vám" },
+              { step: "4", text: "Po přijetí platby potvrdíme rezervaci a ozveme se Vám" },
               { step: "5", text: "V domluvený čas si hrad vyzvednete" },
               { step: "6", text: "Při vracení proběhne kontrola stavu a následné vrácení kauce" },
             ].map(({ step, text }) => (

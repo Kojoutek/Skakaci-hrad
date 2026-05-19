@@ -108,7 +108,7 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
           {/* Výběr hradu */}
           <Card>
             <CardHeader>
-              <CardTitle>Vyberte hrad</CardTitle>
+              <CardTitle>Vyberte typ</CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               {castles.map((castle) => {

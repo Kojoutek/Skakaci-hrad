@@ -46,7 +46,7 @@ export async function createReservation(formData: {
       castle_id: formData.castleId,
       customer_id: customer.id,
       status: "pending",
-      total_deposit: formData.days.length * 100,
+      total_deposit: 200,
       note: formData.note || null,
     })
     .select("id")

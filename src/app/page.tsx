@@ -16,7 +16,7 @@ export default function HomePage() {
           </h1>
           <p className="text-xl text-gray-600 mb-8">
             Udělejte z každé oslavy nezapomenutelný zážitek! Pronajměte si
-            skákací hrad přímo k vám domů.
+            skákací hrad přímo k Vám domů.
           </p>
           <Link
             href="/rezervace"
@@ -42,10 +42,10 @@ export default function HomePage() {
           <Card>
             <CardContent className="pt-6 text-center">
               <MapPin className="w-10 h-10 text-sky-500 mx-auto mb-3" />
-              <h3 className="font-semibold text-lg mb-2">Vyzvednutí u mě</h3>
+              <h3 className="font-semibold text-lg mb-2">Vyzvednutí na adrese</h3>
               <p className="text-gray-600 text-sm">
-                Po potvrzení rezervace si hrad vyzvednete osobně a po skončení
-                vrátíte.
+                Týnec 62, 333 01 Chotěšov. Hrad si vyzvednete osobně a po
+                skončení vrátíte.
               </p>
             </CardContent>
           </Card>
@@ -55,7 +55,7 @@ export default function HomePage() {
               <h3 className="font-semibold text-lg mb-2">100 Kč záloha/den</h3>
               <p className="text-gray-600 text-sm">
                 Uhraďte zálohu přes QR kód. Po přijetí platby rezervaci
-                potvrdíme.
+                potvrdíme. Záloha je vratná.
               </p>
             </CardContent>
           </Card>
@@ -66,21 +66,16 @@ export default function HomePage() {
       <section className="py-16 px-4 bg-gray-50">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-2xl font-bold text-center mb-10">
-            Jak rezervace funguje?
+            Jak pronájem funguje?
           </h2>
           <div className="space-y-4">
             {[
               { step: "1", text: "Vyberte dny v rezervačním formuláři" },
               { step: "2", text: "Vyplňte kontaktní údaje" },
               { step: "3", text: "Uhraďte zálohu 100 Kč/den přes QR kód" },
-              {
-                step: "4",
-                text: "Po přijetí platby potvrdíme rezervaci a ozveme se vám",
-              },
-              {
-                step: "5",
-                text: "V domluvený den si hrad vyzvednete a po skončení vrátíte",
-              },
+              { step: "4", text: "Po přijetí platby potvrdíme rezervaci a ozveme se vám" },
+              { step: "5", text: "V domluvený čas si hrad vyzvednete na adrese Týnec 62, 333 01 Chotěšov" },
+              { step: "6", text: "Při vracení proběhne kontrola stavu a následné vrácení kauce" },
             ].map(({ step, text }) => (
               <div key={step} className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full bg-sky-500 text-white flex items-center justify-center font-bold shrink-0">

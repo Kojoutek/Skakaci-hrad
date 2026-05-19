@@ -9,6 +9,7 @@ export type Database = {
           name: string;
           description: string | null;
           price_per_day: number;
+          purchase_price: number;
           active: boolean;
           created_at: string;
         };
@@ -16,12 +17,14 @@ export type Database = {
           name: string;
           description?: string | null;
           price_per_day?: number;
+          purchase_price?: number;
           active?: boolean;
         };
         Update: {
           name?: string;
           description?: string | null;
           price_per_day?: number;
+          purchase_price?: number;
           active?: boolean;
         };
         Relationships: [];
@@ -87,6 +90,25 @@ export type Database = {
         };
         Update: {
           day?: string;
+        };
+        Relationships: [];
+      };
+      payments: {
+        Row: {
+          id: string;
+          reservation_id: string;
+          amount: number;
+          note: string | null;
+          paid_at: string;
+        };
+        Insert: {
+          reservation_id: string;
+          amount: number;
+          note?: string | null;
+        };
+        Update: {
+          amount?: number;
+          note?: string | null;
         };
         Relationships: [];
       };

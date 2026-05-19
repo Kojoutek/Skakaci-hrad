@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CalendarDays, MapPin, Clock } from "lucide-react";
+import { CalendarDays, MapPin, Clock, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function HomePage() {
@@ -12,7 +12,7 @@ export default function HomePage() {
         <div className="max-w-2xl mx-auto">
           <div className="text-7xl mb-6">🏰</div>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            Půjčovna skákacího hradu
+            Pronájem skákacího hradu
           </h1>
           <p className="text-xl text-gray-600 mb-8">
             Udělejte z každé oslavy nezapomenutelný zážitek! Pronajměte si
@@ -68,7 +68,7 @@ export default function HomePage() {
           <h2 className="text-2xl font-bold text-center mb-10">
             Jak pronájem funguje?
           </h2>
-          <div className="space-y-4">
+          <div className="space-y-4 mb-10">
             {[
               { step: "1", text: "Vyberte dny v rezervačním formuláři" },
               { step: "2", text: "Vyplňte kontaktní údaje" },
@@ -85,12 +85,26 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+
+          {/* Kontakt */}
+          <div className="border-t pt-8 text-center space-y-2">
+            <p className="font-semibold text-gray-800">Máte otázky? Kontaktujte nás:</p>
+            <p className="font-bold text-gray-900">Tomáš Knížek</p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center text-sm text-gray-600">
+              <a href="tel:+420734124927" className="flex items-center gap-1.5 justify-center hover:text-sky-600">
+                <Phone className="w-4 h-4" /> 734 124 927
+              </a>
+              <a href="mailto:knizektomas3@gmail.com" className="flex items-center gap-1.5 justify-center hover:text-sky-600">
+                <Mail className="w-4 h-4" /> knizektomas3@gmail.com
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="mt-auto py-6 text-center text-sm text-gray-400 border-t">
-        <p>Půjčovna skákacího hradu &copy; {new Date().getFullYear()}</p>
+        <p>Pronájem skákacího hradu &copy; {new Date().getFullYear()}</p>
       </footer>
     </div>
   );

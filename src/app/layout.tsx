@@ -5,7 +5,7 @@ import "./globals.css";
 const geist = Geist({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Půjčovna skákacího hradu",
+  title: "Pronájem skákacího hradu",
   description: "Rezervujte si skákací hrad pro vaši oslavu nebo akci.",
 };
 

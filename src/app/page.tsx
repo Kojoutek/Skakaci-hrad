@@ -44,7 +44,7 @@ export default function HomePage() {
               <MapPin className="w-10 h-10 text-sky-500 mx-auto mb-3" />
               <h3 className="font-semibold text-lg mb-2">Vyzvednutí na adrese</h3>
               <p className="text-gray-600 text-sm">
-                Týnec 62, 333 01 Chotěšov. Hrad si vyzvednete osobně a po
+                Týnec 62, 333 01 Chotěšov.<br />Hrad si vyzvednete osobně a po
                 skončení vrátíte.
               </p>
             </CardContent>
@@ -74,7 +74,7 @@ export default function HomePage() {
               { step: "2", text: "Vyplňte kontaktní údaje" },
               { step: "3", text: "Uhraďte zálohu 100 Kč/den přes QR kód" },
               { step: "4", text: "Po přijetí platby potvrdíme rezervaci a ozveme se vám" },
-              { step: "5", text: "V domluvený čas si hrad vyzvednete na adrese Týnec 62, 333 01 Chotěšov" },
+              { step: "5", text: "V domluvený čas si hrad vyzvednete" },
               { step: "6", text: "Při vracení proběhne kontrola stavu a následné vrácení kauce" },
             ].map(({ step, text }) => (
               <div key={step} className="flex items-center gap-4">
@@ -84,14 +84,6 @@ export default function HomePage() {
                 <p className="text-gray-700">{text}</p>
               </div>
             ))}
-          </div>
-          <div className="text-center mt-10">
-            <Link
-              href="/rezervace"
-              className={buttonVariants({ size: "lg" })}
-            >
-              Začít rezervaci
-            </Link>
           </div>
         </div>
       </section>

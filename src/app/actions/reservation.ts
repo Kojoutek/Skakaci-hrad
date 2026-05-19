@@ -105,22 +105,58 @@ export async function updateReservationStatus(
         .map((d) => format(d, "EEEE d. MMMM yyyy", { locale: cs }))
         .join("\n");
 
+      const dayCount = days.length;
+      const rental = 1250 * dayCount;
+      const deposit = r.total_deposit;
+      const doplatek = rental - deposit;
+      const celkem = doplatek + 2300;
+
       await resend.emails.send({
         from: "onboarding@resend.dev",
         to: "knizektomas3@gmail.com",
-        subject: `Potvrzená rezervace – ${r.customers.name}`,
+        subject: `Potvrzení rezervace – ${r.castles.name}`,
         text: [
-          `Byla potvrzena nová rezervace.`,
+          `Dobrý den,`,
+          ``,
+          `Vaše rezervace skákacího hradu ${r.castles.name} byla potvrzena.`,
           ``,
           `Klient: ${r.customers.name}`,
           `E-mail: ${r.customers.email}`,
           `Telefon: ${r.customers.phone}`,
           ``,
-          `Typ: ${r.castles.name}`,
-          `Termíny:\n${daysText}`,
+          `Rezervované termíny:`,
+          daysText,
           ``,
-          `Záloha: ${r.total_deposit} Kč`,
-          adminNote ? `\nInterní poznámka: ${adminNote}` : "",
+          `---`,
+          `Rozpis platby:`,
+          ``,
+          `┌───────────────────────────────────┬──────────┐`,
+          `│              Položka              │  Částka  │`,
+          `├───────────────────────────────────┼──────────┤`,
+          `│ Pronájem (1 250 Kč × ${dayCount} ${dayCount === 1 ? "den" : dayCount < 5 ? "dny" : "dní"})${" ".repeat(Math.max(0, 14 - String(dayCount).length))}│ ${rental.toLocaleString("cs")} Kč${" ".repeat(Math.max(0, 5 - String(rental).length))}│`,
+          `├───────────────────────────────────┼──────────┤`,
+          `│ Uhrazená záloha                   │ −${deposit} Kč  │`,
+          `├───────────────────────────────────┼──────────┤`,
+          `│ Vratná kauce                      │ 2 300 Kč │`,
+          `├───────────────────────────────────┼──────────┤`,
+          `│ Doplatek při předání              │ ${doplatek.toLocaleString("cs")} Kč${" ".repeat(Math.max(0, 5 - String(doplatek).length))}│`,
+          `└───────────────────────────────────┴──────────┘`,
+          ``,
+          `Celkem uhradíte při předání: ${celkem.toLocaleString("cs")} Kč`,
+          `Kauce + záloha budou vráceny po odevzdání hradu a kontrole stavu.`,
+          ``,
+          `---`,
+          `Předání a vrácení:`,
+          `Hrad si vyzvednete na adrese Týnec 62, 333 01 Chotěšov.`,
+          `Pro domluvení přesného času mě prosím kontaktujte:`,
+          `📞 734 124 927`,
+          `✉ knizektomas3@gmail.com`,
+          ``,
+          `Předání je možné uskutečnit den před rezervovaným termínem a to od 20:00 do 22:00`,
+          `Vrácení je možné poslední den rezervace do 20:00`,
+          ``,
+          `Děkuji a s pozdravem`,
+          `Tomáš Knížek`,
         ].join("\n"),
       });
     }

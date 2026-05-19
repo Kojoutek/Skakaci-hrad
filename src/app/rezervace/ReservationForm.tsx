@@ -276,7 +276,7 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
           <CardContent className="space-y-6">
             <div className="space-y-2 text-sm">
               <div className="flex justify-between py-1 border-b">
-                <span className="text-gray-500">Hrad</span>
+                <span className="text-gray-500">Typ</span>
                 <span className="font-medium">{selectedCastle?.name}</span>
               </div>
               <div className="flex justify-between py-1 border-b">

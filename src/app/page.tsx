@@ -52,7 +52,7 @@ export default function HomePage() {
           <Card>
             <CardContent className="pt-6 text-center">
               <Clock className="w-10 h-10 text-sky-500 mx-auto mb-3" />
-              <h3 className="font-semibold text-lg mb-2">100 Kč záloha/den</h3>
+              <h3 className="font-semibold text-lg mb-2">Záloha 200 Kč</h3>
               <p className="text-gray-600 text-sm">
                 Uhraďte zálohu přes QR kód. Po přijetí platby rezervaci
                 potvrdíme. Záloha je vratná.
@@ -72,7 +72,7 @@ export default function HomePage() {
             {[
               { step: "1", text: "Vyberte dny v rezervačním formuláři" },
               { step: "2", text: "Vyplňte kontaktní údaje" },
-              { step: "3", text: "Uhraďte zálohu 100 Kč/den přes QR kód" },
+              { step: "3", text: "Uhraďte zálohu 200 Kč přes QR kód" },
               { step: "4", text: "Po přijetí platby potvrdíme rezervaci a ozveme se vám" },
               { step: "5", text: "V domluvený čas si hrad vyzvednete" },
               { step: "6", text: "Při vracení proběhne kontrola stavu a následné vrácení kauce" },

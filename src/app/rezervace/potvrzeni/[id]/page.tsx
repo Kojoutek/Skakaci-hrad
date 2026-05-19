@@ -63,14 +63,14 @@ export default async function PotvrzeniPage({ params }: Props) {
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold">Rezervace odeslána!</h1>
           <p className="text-gray-600 mt-2">
-            Uhraďte zálohu níže. Po přijetí platby vás potvrdíme.
+            Prosím o uhrazení zálohy níže.
           </p>
         </div>
 
         {/* QR platba */}
         <Card>
           <CardHeader>
-            <CardTitle>QR platba – {reservation.total_deposit} Kč</CardTitle>
+            <CardTitle>QR platba</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-col items-center gap-4">
             <Image src={qrDataUrl} alt="QR kód pro platbu" width={200} height={200} unoptimized />
@@ -100,6 +100,10 @@ export default async function PotvrzeniPage({ params }: Props) {
           </CardHeader>
           <CardContent className="text-sm space-y-2">
             <div className="flex justify-between border-b py-1">
+              <span className="text-gray-500">Typ</span>
+              <span>{reservation.castles.name}</span>
+            </div>
+            <div className="flex justify-between border-b py-1">
               <span className="text-gray-500">Jméno</span>
               <span>{customer.name}</span>
             </div>
@@ -123,9 +127,9 @@ export default async function PotvrzeniPage({ params }: Props) {
         </Card>
 
         <p className="text-center text-sm text-gray-500">
-          Po uhrazení zálohy vás budeme kontaktovat na e-mail{" "}
-          <strong>{customer.email}</strong> nebo telefon{" "}
-          <strong>{customer.phone}</strong>.
+          Po uhrazení zálohy Vás budeme kontaktovat na e-mail{" "}
+          <strong>knizektomas3@gmail.com</strong> nebo telefon{" "}
+          <strong>+420 725 240 206</strong>.
         </p>
 
         <div className="text-center">

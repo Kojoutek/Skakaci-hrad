@@ -91,12 +91,12 @@ export default function HomePage() {
             <p className="font-semibold text-gray-800">Máte otázky? Kontaktujte nás:</p>
             <p className="font-bold text-gray-900">Tomáš Knížek</p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center text-sm text-gray-600">
-              <a href="tel:+420734124927" className="flex items-center gap-1.5 justify-center hover:text-sky-600">
+              <span className="flex items-center gap-1.5 justify-center">
                 <Phone className="w-4 h-4" /> 734 124 927
-              </a>
-              <a href="mailto:knizektomas3@gmail.com" className="flex items-center gap-1.5 justify-center hover:text-sky-600">
+              </span>
+              <span className="flex items-center gap-1.5 justify-center">
                 <Mail className="w-4 h-4" /> knizektomas3@gmail.com
-              </a>
+              </span>
             </div>
           </div>
         </div>

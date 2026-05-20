@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReservationActions from "../ReservationActions";
 import PaymentButton from "../PaymentButton";
+import BlockedDaysManager from "../BlockedDaysManager";
 import type { ReservationStatus } from "@/lib/supabase/types";
 
 type Payment = { amount: number; paid_at: string };
@@ -82,10 +83,15 @@ function ReservationCard({ r }: { r: Reservation }) {
 
 export default async function RezervacePage() {
   const supabase = await createAdminClient();
-  const { data: raw } = await supabase
-    .from("reservations")
-    .select("*, customers(*), reservation_days(*), castles(name), payments(*)")
-    .order("created_at", { ascending: false });
+  const [{ data: raw }, { data: blockedRaw }] = await Promise.all([
+    supabase
+      .from("reservations")
+      .select("*, customers(*), reservation_days(*), castles(name), payments(*)")
+      .order("created_at", { ascending: false }),
+    supabase.from("blocked_days").select("day"),
+  ]);
+
+  const blockedDays = (blockedRaw ?? []).map((d) => (d as unknown as { day: string }).day);
 
   const all = (raw ?? []) as unknown as Reservation[];
   const pending = all.filter((r) => r.status === "pending");
@@ -112,6 +118,8 @@ export default async function RezervacePage() {
           ))}
         </div>
       </div>
+
+      <BlockedDaysManager blockedDays={blockedDays} />
 
       <Tabs defaultValue="pending">
         <TabsList className="w-full">

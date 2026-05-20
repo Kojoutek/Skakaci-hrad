@@ -93,6 +93,18 @@ export type Database = {
         };
         Relationships: [];
       };
+      blocked_days: {
+        Row: {
+          day: string;
+        };
+        Insert: {
+          day: string;
+        };
+        Update: {
+          day?: string;
+        };
+        Relationships: [];
+      };
       payments: {
         Row: {
           id: string;

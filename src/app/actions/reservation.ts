@@ -10,13 +10,29 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function getBookedDays(castleId: string): Promise<string[]> {
   const supabase = await createAdminClient();
-  const { data } = await supabase
-    .from("reservation_days")
-    .select("day, reservations!inner(castle_id, status)")
-    .eq("reservations.castle_id", castleId)
-    .in("reservations.status", ["pending", "confirmed"]);
+  const [{ data: reservedData }, { data: blockedData }] = await Promise.all([
+    supabase
+      .from("reservation_days")
+      .select("day, reservations!inner(castle_id, status)")
+      .eq("reservations.castle_id", castleId)
+      .in("reservations.status", ["pending", "confirmed"]),
+    supabase.from("blocked_days").select("day"),
+  ]);
 
-  return (data ?? []).map((d) => (d as unknown as { day: string }).day);
+  const reserved = (reservedData ?? []).map((d) => (d as unknown as { day: string }).day);
+  const blocked = (blockedData ?? []).map((d) => (d as unknown as { day: string }).day);
+  return [...new Set([...reserved, ...blocked])];
+}
+
+export async function toggleBlockedDay(day: string): Promise<void> {
+  const supabase = await createAdminClient();
+  const { data } = await supabase.from("blocked_days").select("day").eq("day", day).maybeSingle();
+  if (data) {
+    await supabase.from("blocked_days").delete().eq("day", day);
+  } else {
+    await supabase.from("blocked_days").insert({ day });
+  }
+  revalidatePath("/admin/rezervace");
 }
 
 export async function createReservation(formData: {

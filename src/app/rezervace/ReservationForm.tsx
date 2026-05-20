@@ -137,7 +137,7 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
                       </div>
                       <div className="text-right text-sm">
                         <p className="font-semibold text-gray-800">1 250 Kč/den</p>
-                        <p className="text-gray-500">Kauce: 2 300 Kč</p>
+                        <p className="text-gray-500">Kauce: 2 500 Kč</p>
                       </div>
                       {info && (
                         <button

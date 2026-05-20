@@ -107,7 +107,7 @@ export async function updateReservationStatus(
 
       const dayCount = days.length;
       const rental = 1250 * dayCount;
-      const celkem = rental + 2300;
+      const celkem = rental + 2500;
       const dnyText = dayCount === 1 ? "den" : dayCount < 5 ? "dny" : "dní";
 
       await resend.emails.send({
@@ -130,7 +130,7 @@ export async function updateReservationStatus(
           `Rozpis platby:`,
           ``,
           `Pronájem (1.250 Kč x ${dayCount} ${dnyText}) - ${rental.toLocaleString("cs")} Kč`,
-          `Vratná kauce - 2.300 Kč`,
+          `Vratná kauce - 2.500 Kč`,
           `Uhrazená záloha - -200 Kč`,
           ``,
           `Celkem uhradíte při předání: ${celkem.toLocaleString("cs")} Kč`,

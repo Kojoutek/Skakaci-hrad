@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { DayPicker } from "react-day-picker";
 import { cs } from "date-fns/locale";
 import { parseISO, startOfToday, format, isBefore } from "date-fns";
@@ -15,6 +16,7 @@ interface Props {
 export default function BlockedDaysManager({ blockedDays: initial }: Props) {
   const [blocked, setBlocked] = useState<string[]>(initial);
   const [pending, startTransition] = useTransition();
+  const router = useRouter();
   const today = startOfToday();
 
   const blockedDates = blocked.map((d) => parseISO(d));
@@ -27,6 +29,7 @@ export default function BlockedDaysManager({ blockedDays: initial }: Props) {
       setBlocked((prev) =>
         prev.includes(key) ? prev.filter((d) => d !== key) : [...prev, key]
       );
+      router.refresh();
     });
   }
 

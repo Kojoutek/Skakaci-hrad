@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useTransition, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DayPicker } from "react-day-picker";
 import { cs } from "date-fns/locale";
@@ -13,23 +13,25 @@ interface Props {
   blockedDays: string[];
 }
 
-export default function BlockedDaysManager({ blockedDays: initial }: Props) {
-  const [blocked, setBlocked] = useState<string[]>(initial);
+export default function BlockedDaysManager({ blockedDays }: Props) {
   const [pending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const today = startOfToday();
 
-  const blockedDates = blocked.map((d) => parseISO(d));
+  const blockedDates = blockedDays.map((d) => parseISO(d));
 
   function handleDayClick(day: Date) {
     if (isBefore(day, today)) return;
     const key = format(day, "yyyy-MM-dd");
+    setError(null);
     startTransition(async () => {
-      await toggleBlockedDay(key);
-      setBlocked((prev) =>
-        prev.includes(key) ? prev.filter((d) => d !== key) : [...prev, key]
-      );
-      router.refresh();
+      try {
+        await toggleBlockedDay(key);
+        router.refresh();
+      } catch (e) {
+        setError(e instanceof Error ? e.message : "Neznámá chyba");
+      }
     });
   }
 
@@ -40,6 +42,9 @@ export default function BlockedDaysManager({ blockedDays: initial }: Props) {
         <p className="text-sm text-gray-500">Kliknutím na den ho zablokuješ nebo odblokuješ pro veřejné rezervace.</p>
       </CardHeader>
       <CardContent>
+        {error && (
+          <p className="text-sm text-red-600 bg-red-50 rounded p-2 mb-3">{error}</p>
+        )}
         <style>{`
           .admin-rdp .rdp-day_button { border-radius: 50%; width: 36px; height: 36px; }
           .admin-rdp .rdp-day.day-past .rdp-day_button { background: #f3f4f6; color: #9ca3af; cursor: default; }
@@ -62,11 +67,11 @@ export default function BlockedDaysManager({ blockedDays: initial }: Props) {
             className="admin-rdp border rounded-xl p-4 bg-white"
           />
         </div>
-        {blocked.length > 0 && (
+        {blockedDays.length > 0 && (
           <div className="mt-4">
             <p className="text-xs text-gray-500 mb-2">Zablokované dny:</p>
             <div className="flex flex-wrap gap-2">
-              {blocked
+              {blockedDays
                 .filter((d) => !isBefore(parseISO(d), today))
                 .sort()
                 .map((d) => (

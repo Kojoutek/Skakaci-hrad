@@ -24,16 +24,35 @@ export async function getBookedDays(castleId: string): Promise<string[]> {
   return [...new Set([...reserved, ...blocked])];
 }
 
-export async function toggleBlockedDay(day: string): Promise<void> {
+export async function toggleBlockedDay(day: string): Promise<{ blocked: boolean }> {
   const supabase = await createAdminClient();
-  const { data } = await supabase.from("blocked_days").select("day").eq("day", day).maybeSingle();
+  const { data, error: selectError } = await supabase
+    .from("blocked_days")
+    .select("day")
+    .eq("day", day)
+    .maybeSingle();
+
+  if (selectError) throw new Error("Select error: " + selectError.message);
+
   if (data) {
-    await supabase.from("blocked_days").delete().eq("day", day);
+    const { error } = await supabase.from("blocked_days").delete().eq("day", day);
+    if (error) throw new Error("Delete error: " + error.message);
+    revalidatePath("/admin/rezervace");
+    revalidatePath("/rezervace");
+    return { blocked: false };
   } else {
-    await supabase.from("blocked_days").insert({ day });
+    const { error } = await supabase.from("blocked_days").insert({ day });
+    if (error) throw new Error("Insert error: " + error.message);
+    revalidatePath("/admin/rezervace");
+    revalidatePath("/rezervace");
+    return { blocked: true };
   }
-  revalidatePath("/admin/rezervace");
-  revalidatePath("/rezervace");
+}
+
+export async function getBlockedDays(): Promise<string[]> {
+  const supabase = await createAdminClient();
+  const { data } = await supabase.from("blocked_days").select("day");
+  return (data ?? []).map((d) => (d as unknown as { day: string }).day);
 }
 
 export async function createReservation(formData: {

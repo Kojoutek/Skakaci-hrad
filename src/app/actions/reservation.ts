@@ -33,6 +33,7 @@ export async function toggleBlockedDay(day: string): Promise<void> {
     await supabase.from("blocked_days").insert({ day });
   }
   revalidatePath("/admin/rezervace");
+  revalidatePath("/rezervace");
 }
 
 export async function createReservation(formData: {

@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { createAdminClient } from "@/lib/supabase/server";
 import { format, parseISO } from "date-fns";
 import { cs } from "date-fns/locale";

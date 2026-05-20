@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { createAdminClient } from "@/lib/supabase/server";
 import { getBookedDays } from "@/app/actions/reservation";
 import ReservationForm from "./ReservationForm";

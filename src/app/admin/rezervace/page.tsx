@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import { createAdminClient } from "@/lib/supabase/server";
 import { format, parseISO } from "date-fns";
 import { cs } from "date-fns/locale";
@@ -85,14 +83,12 @@ function ReservationCard({ r }: { r: Reservation }) {
 
 export default async function RezervacePage() {
   const supabase = await createAdminClient();
-  const [{ data: raw }, { data: blockedRaw }] = await Promise.all([
-    supabase
-      .from("reservations")
-      .select("*, customers(*), reservation_days(*), castles(name), payments(*)")
-      .order("created_at", { ascending: false }),
-    supabase.from("blocked_days").select("day"),
-  ]);
+  const { data: raw } = await supabase
+    .from("reservations")
+    .select("*, customers(*), reservation_days(*), castles(name), payments(*)")
+    .order("created_at", { ascending: false });
 
+  const { data: blockedRaw } = await supabase.from("blocked_days").select("day");
   const blockedDays = (blockedRaw ?? []).map((d) => (d as unknown as { day: string }).day);
 
   const all = (raw ?? []) as unknown as Reservation[];

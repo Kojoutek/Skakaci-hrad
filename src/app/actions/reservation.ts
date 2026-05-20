@@ -29,21 +29,34 @@ export async function createReservation(formData: {
 }): Promise<{ success: boolean; reservationId?: string; error?: string }> {
   const supabase = await createAdminClient();
 
-  const { data: customer, error: customerError } = await supabase
+  // Najdi existujícího zákazníka podle jména + emailu, nebo vytvoř nového
+  let customerId: string;
+  const { data: existing } = await supabase
     .from("customers")
-    .insert({ name: formData.name, email: formData.email, phone: formData.phone })
     .select("id")
-    .single();
+    .eq("email", formData.email)
+    .eq("name", formData.name)
+    .maybeSingle();
 
-  if (customerError || !customer) {
-    return { success: false, error: "Nepodařilo se uložit kontaktní údaje." };
+  if (existing) {
+    customerId = existing.id;
+  } else {
+    const { data: newCustomer, error: customerError } = await supabase
+      .from("customers")
+      .insert({ name: formData.name, email: formData.email, phone: formData.phone })
+      .select("id")
+      .single();
+    if (customerError || !newCustomer) {
+      return { success: false, error: "Nepodařilo se uložit kontaktní údaje." };
+    }
+    customerId = newCustomer.id;
   }
 
   const { data: reservation, error: reservationError } = await supabase
     .from("reservations")
     .insert({
       castle_id: formData.castleId,
-      customer_id: customer.id,
+      customer_id: customerId,
       status: "pending",
       total_deposit: 200,
       note: formData.note || null,

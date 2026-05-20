@@ -113,7 +113,6 @@ export default async function BalancePage() {
       {/* Grafy – client component */}
       <BilanceCharts
         monthlyData={monthlyData}
-        statusCounts={statusCounts}
         castleStats={castleStats}
       />
     </div>

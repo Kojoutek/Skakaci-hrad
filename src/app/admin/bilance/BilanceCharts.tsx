@@ -3,25 +3,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, Legend,
 } from "recharts";
-
-const STATUS_COLORS = {
-  pending: "#f59e0b",
-  confirmed: "#0ea5e9",
-  paid: "#22c55e",
-  cancelled: "#ef4444",
-};
-const STATUS_LABEL: Record<string, string> = {
-  pending: "Čekající",
-  confirmed: "Potvrzené",
-  paid: "Zaplacené",
-  cancelled: "Zrušené",
-};
 
 interface Props {
   monthlyData: { month: string; amount: number }[];
-  statusCounts: { pending: number; confirmed: number; paid: number; cancelled: number };
   castleStats: {
     name: string;
     purchase_price: number;
@@ -31,11 +16,7 @@ interface Props {
   }[];
 }
 
-export default function BilanceCharts({ monthlyData, statusCounts, castleStats }: Props) {
-  const pieData = Object.entries(statusCounts)
-    .filter(([, v]) => v > 0)
-    .map(([key, value]) => ({ name: STATUS_LABEL[key], value, color: STATUS_COLORS[key as keyof typeof STATUS_COLORS] }));
-
+export default function BilanceCharts({ monthlyData, castleStats }: Props) {
   return (
     <div className="space-y-6">
       {/* Výdělek po měsících */}
@@ -52,49 +33,19 @@ export default function BilanceCharts({ monthlyData, statusCounts, castleStats }
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                 <YAxis tick={{ fontSize: 12 }} tickFormatter={(v) => `${v} Kč`} width={70} />
-                <Tooltip formatter={(v: unknown) => [`${(v as number).toLocaleString("cs")} Kč`, "Výdělek"]} />
-                <Bar dataKey="amount" fill="#0ea5e9" radius={[4, 4, 0, 0]} />
+                <Tooltip
+                  formatter={(v: unknown) => [`${(v as number).toLocaleString("cs")} Kč`, "Výdělek"]}
+                  cursor={{ fill: "transparent" }}
+                />
+                <Bar dataKey="amount" fill="#0ea5e9" radius={[4, 4, 0, 0]} isAnimationActive={false} style={{ cursor: "default" }} />
               </BarChart>
             </ResponsiveContainer>
           )}
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Rozložení rezervací */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Stav rezervací</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {pieData.length === 0 ? (
-              <p className="text-sm text-gray-400 text-center py-8">Žádné rezervace</p>
-            ) : (
-              <ResponsiveContainer width="100%" height={220}>
-                <PieChart>
-                  <Pie
-                    data={pieData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={55}
-                    outerRadius={80}
-                    paddingAngle={3}
-                    dataKey="value"
-                  >
-                    {pieData.map((entry, i) => (
-                      <Cell key={i} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Legend formatter={(value) => <span className="text-xs">{value}</span>} />
-                  <Tooltip formatter={(v: unknown) => [`${v}×`, ""]} />
-                </PieChart>
-              </ResponsiveContainer>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* Bilance per hrad */}
-        <Card>
+      {/* Bilance per hrad */}
+      <Card>
           <CardHeader>
             <CardTitle className="text-base">Bilance hradů</CardTitle>
           </CardHeader>
@@ -138,8 +89,7 @@ export default function BilanceCharts({ monthlyData, statusCounts, castleStats }
               </div>
             ))}
           </CardContent>
-        </Card>
-      </div>
+      </Card>
     </div>
   );
 }

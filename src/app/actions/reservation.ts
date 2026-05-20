@@ -139,6 +139,7 @@ export async function updateReservationStatus(
           ``,
           `---`,
           `Předání a vrácení:`,
+          ``,
           `Hrad si vyzvednete na adrese Týnec 62, 333 01 Chotěšov.`,
           `Pro domluvení přesného času mě prosím kontaktujte:`,
           `Tel: 734 124 927`,

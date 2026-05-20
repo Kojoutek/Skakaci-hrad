@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ReservationActions from "../ReservationActions";
 import PaymentButton from "../PaymentButton";
+import CancelButton from "../CancelButton";
 import BlockedDaysManager from "../BlockedDaysManager";
 import type { ReservationStatus } from "@/lib/supabase/types";
 
@@ -70,7 +71,10 @@ function ReservationCard({ r }: { r: Reservation }) {
       )}
       {r.status === "pending" && <ReservationActions reservationId={r.id} />}
       {r.status === "confirmed" && (
-        <PaymentButton reservationId={r.id} existingPayments={r.payments} />
+        <div className="space-y-2">
+          <PaymentButton reservationId={r.id} existingPayments={r.payments} />
+          <CancelButton reservationId={r.id} />
+        </div>
       )}
       {r.status === "paid" && (
         <p className="text-sm font-medium text-green-700 bg-green-50 rounded-lg p-2">

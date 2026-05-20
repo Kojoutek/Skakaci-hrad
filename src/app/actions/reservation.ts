@@ -112,6 +112,39 @@ export async function createReservation(formData: {
     return { success: false, error: "Nepodařilo se uložit termíny." };
   }
 
+  // Email adminu o nové rezervaci
+  const days = formData.days
+    .map((d) => parseISO(d))
+    .sort((a, b) => a.getTime() - b.getTime());
+  const daysText = days.map((d) => format(d, "EEEE d. MMMM yyyy", { locale: cs })).join("\n");
+
+  const { data: castleData } = await supabase
+    .from("castles")
+    .select("name")
+    .eq("id", formData.castleId)
+    .single();
+
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: "knizektomas3@gmail.com",
+    subject: `Nová rezervace – ${castleData?.name ?? "hrad"}`,
+    text: [
+      `Dobrý den,`,
+      ``,
+      `Přišla nová žádost o rezervaci.`,
+      ``,
+      `Klient: ${formData.name}`,
+      `E-mail: ${formData.email}`,
+      `Telefon: ${formData.phone}`,
+      ``,
+      `Požadované termíny:`,
+      daysText,
+      formData.note ? `\nPoznámka: ${formData.note}` : "",
+      ``,
+      `Pro správu rezervací přejděte do administrace.`,
+    ].join("\n"),
+  });
+
   return { success: true, reservationId: reservation.id };
 }
 

@@ -1,4 +1,4 @@
-export type ReservationStatus = "pending" | "confirmed" | "cancelled";
+export type ReservationStatus = "pending" | "confirmed" | "cancelled" | "paid";
 
 export type Database = {
   public: {

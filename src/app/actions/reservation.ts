@@ -165,5 +165,12 @@ export async function addPayment(reservationId: string, amount: number, note?: s
     .insert({ reservation_id: reservationId, amount, note: note ?? null });
 
   if (error) throw new Error(error.message);
+
+  // Po zaznamenání platby přesuň rezervaci do stavu "paid"
+  await supabase
+    .from("reservations")
+    .update({ status: "paid" })
+    .eq("id", reservationId);
+
   revalidatePath("/admin");
 }

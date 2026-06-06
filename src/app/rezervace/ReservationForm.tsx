@@ -62,6 +62,18 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
   const [note, setNote] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; phone?: string }>({});
+
+  function validateContact(): boolean {
+    const errors: { email?: string; phone?: string } = {};
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()))
+      errors.email = "Zadejte platnou e-mailovou adresu.";
+    const p = phone.replace(/\s+/g, "");
+    if (!/^(\+420)?[0-9]{9}$/.test(p))
+      errors.phone = "Zadejte platné číslo (např. 777 123 456).";
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
 
   const sorted = [...selectedDays].sort((a, b) => a.getTime() - b.getTime());
   const selectedCastle = castles.find((c) => c.id === selectedCastleId);
@@ -249,11 +261,13 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
             </div>
             <div className="space-y-2">
               <Label htmlFor="email">E-mail *</Label>
-              <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="jan@example.cz" />
+              <Input id="email" type="email" value={email} onChange={(e) => { setEmail(e.target.value); setFieldErrors((fe) => ({ ...fe, email: undefined })); }} placeholder="jan@example.cz" />
+              {fieldErrors.email && <p className="text-xs text-red-500">{fieldErrors.email}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="phone">Telefon *</Label>
-              <Input id="phone" type="tel" value={phone} onChange={(e) => setPhone(e.target.value)} placeholder="+420 777 123 456" />
+              <Input id="phone" type="tel" value={phone} onChange={(e) => { setPhone(e.target.value); setFieldErrors((fe) => ({ ...fe, phone: undefined })); }} placeholder="+420 777 123 456" />
+              {fieldErrors.phone && <p className="text-xs text-red-500">{fieldErrors.phone}</p>}
             </div>
             <div className="space-y-2">
               <Label htmlFor="note">Poznámka</Label>
@@ -261,7 +275,7 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
             </div>
             <div className="flex gap-3">
               <Button variant="outline" onClick={() => setStep("calendar")} className="flex-1">Zpět</Button>
-              <Button onClick={() => setStep("summary")} disabled={!name || !email || !phone} className="flex-1">Pokračovat</Button>
+              <Button onClick={() => { if (validateContact()) setStep("summary"); }} disabled={!name || !email || !phone} className="flex-1">Pokračovat</Button>
             </div>
           </CardContent>
         </Card>

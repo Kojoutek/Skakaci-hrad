@@ -64,6 +64,15 @@ export async function createReservation(formData: {
   phone: string;
   note: string;
 }): Promise<{ success: boolean; reservationId?: string; error?: string }> {
+  // Validace vstupů
+  if (!formData.name.trim()) return { success: false, error: "Zadejte jméno a příjmení." };
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()))
+    return { success: false, error: "Zadejte platnou e-mailovou adresu." };
+  const phone = formData.phone.replace(/\s+/g, "");
+  if (!/^(\+420)?[0-9]{9}$/.test(phone))
+    return { success: false, error: "Zadejte platné telefonní číslo (např. 777 123 456)." };
+  if (formData.days.length === 0) return { success: false, error: "Vyberte alespoň jeden termín." };
+
   const supabase = await createAdminClient();
 
   // Najdi existujícího zákazníka podle jména + emailu, nebo vytvoř nového

@@ -7,7 +7,6 @@ import ClientAccordion from "./ClientAccordion";
 interface Reservation {
   id: string;
   status: string;
-  total_deposit: number;
   created_at: string;
   castles: { name: string };
   reservation_days: { day: string }[];

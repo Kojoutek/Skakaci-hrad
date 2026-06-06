@@ -9,7 +9,7 @@ export default async function BalancePage() {
 
   const { data: rawCastles } = await supabase
     .from("castles")
-    .select("id, name, purchase_price, reservations(id, status, total_deposit, created_at, payments(amount, paid_at))")
+    .select("id, name, purchase_price, reservations(id, status, created_at, payments(amount, paid_at))")
     .eq("active", true);
 
   const castles = (rawCastles ?? []) as unknown as {
@@ -19,7 +19,6 @@ export default async function BalancePage() {
     reservations: {
       id: string;
       status: string;
-      total_deposit: number;
       created_at: string;
       payments: { amount: number; paid_at: string }[];
     }[];

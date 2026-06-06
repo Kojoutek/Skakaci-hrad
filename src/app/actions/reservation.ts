@@ -94,7 +94,7 @@ export async function createReservation(formData: {
       castle_id: formData.castleId,
       customer_id: customerId,
       status: "pending",
-      total_deposit: 200,
+      total_deposit: 0,
       note: formData.note || null,
     })
     .select("id")
@@ -172,7 +172,6 @@ export async function updateReservationStatus(
 
     if (raw) {
       const r = raw as unknown as {
-        total_deposit: number;
         admin_note: string | null;
         customers: { name: string; email: string; phone: string };
         reservation_days: { day: string }[];
@@ -214,10 +213,8 @@ export async function updateReservationStatus(
           `Pronájem (1.250 Kč x ${dayCount} ${dnyText}) - ${rental.toLocaleString("cs")} Kč`,
           `Vratná kauce - 2.500 Kč`,
           ``,
-          `Uhrazená záloha - 200 Kč`,
-          ``,
           `Celkem uhradíte při předání: ${celkem.toLocaleString("cs")} Kč`,
-          `Kauce + záloha (${(2500 + 200).toLocaleString("cs")} Kč) budou vráceny po odevzdání hradu a kontrole stavu.`,
+          `Kauce (2.500 Kč) bude vrácena po odevzdání hradu a kontrole stavu.`,
           ``,
           `---`,
           `Předání a vrácení:`,

@@ -6,7 +6,7 @@ export default async function KlientiPage() {
 
   const { data: raw } = await supabase
     .from("customers")
-    .select("*, reservations(id, status, total_deposit, created_at, castles(name), reservation_days(day), payments(amount))")
+    .select("*, reservations(id, status, created_at, castles(name), reservation_days(day), payments(amount))")
     .order("created_at", { ascending: false });
 
   const customers = (raw ?? []) as unknown as {
@@ -18,7 +18,6 @@ export default async function KlientiPage() {
     reservations: {
       id: string;
       status: string;
-      total_deposit: number;
       created_at: string;
       castles: { name: string };
       reservation_days: { day: string }[];

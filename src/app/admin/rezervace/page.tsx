@@ -14,7 +14,6 @@ type Payment = { amount: number; paid_at: string };
 type Reservation = {
   id: string;
   status: ReservationStatus;
-  total_deposit: number;
   note: string | null;
   admin_note: string | null;
   created_at: string;
@@ -60,7 +59,6 @@ function ReservationCard({ r }: { r: Reservation }) {
         ))}
       </div>
       <div className="flex items-center justify-between text-sm">
-        <span className="font-semibold text-sky-700">Záloha: {r.total_deposit} Kč</span>
         <span className="text-xs text-gray-400">{format(parseISO(r.created_at), "d.M.yyyy HH:mm")}</span>
       </div>
       {r.note && (

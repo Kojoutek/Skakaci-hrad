@@ -9,7 +9,6 @@ import { Badge } from "@/components/ui/badge";
 interface Reservation {
   id: string;
   status: string;
-  total_deposit: number;
   created_at: string;
   castles: { name: string };
   reservation_days: { day: string }[];
@@ -93,9 +92,8 @@ export default function ClientAccordion({ customer: c, returning, statusLabel, s
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-gray-500">
-                        Záloha: <span className="font-medium text-gray-800">{r.total_deposit} Kč</span>
                         {totalPaid > 0 && (
-                          <> · Zaplaceno: <span className="font-medium text-green-600">{totalPaid.toLocaleString("cs")} Kč</span></>
+                          <>Zaplaceno: <span className="font-medium text-green-600">{totalPaid.toLocaleString("cs")} Kč</span></>
                         )}
                       </span>
                       <span className="text-xs text-gray-400">{format(parseISO(r.created_at), "d.M.yyyy")}</span>

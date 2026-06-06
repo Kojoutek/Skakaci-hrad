@@ -1,9 +1,7 @@
 import { createAdminClient } from "@/lib/supabase/server";
-import { generatePaymentQR, reservationToVS } from "@/lib/qr";
 import { format, parseISO } from "date-fns";
 import { cs } from "date-fns/locale";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";
@@ -13,7 +11,6 @@ import type { ReservationStatus } from "@/lib/supabase/types";
 type ReservationDetail = {
   id: string;
   status: ReservationStatus;
-  total_deposit: number;
   note: string | null;
   created_at: string;
   customers: { name: string; email: string; phone: string };
@@ -38,17 +35,6 @@ export default async function PotvrzeniPage({ params }: Props) {
   if (!raw) notFound();
   const reservation = raw as unknown as ReservationDetail;
 
-  const vs = reservationToVS(id);
-  const iban = process.env.NEXT_PUBLIC_BANK_ACCOUNT ?? "";
-  const bankName = process.env.NEXT_PUBLIC_BANK_NAME ?? "";
-
-  const qrDataUrl = await generatePaymentQR({
-    iban,
-    amount: reservation.total_deposit,
-    variableSymbol: vs,
-    message: `Zaloha skakaci hrad ${vs}`,
-  });
-
   const days = reservation.reservation_days
     .map((d) => parseISO(d.day))
     .sort((a, b) => a.getTime() - b.getTime());
@@ -63,35 +49,9 @@ export default async function PotvrzeniPage({ params }: Props) {
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h1 className="text-2xl font-bold">Rezervace odeslána!</h1>
           <p className="text-gray-600 mt-2">
-            Prosím o uhrazení zálohy níže.
+            Budeme Vás brzy kontaktovat a rezervaci potvrdíme.
           </p>
         </div>
-
-        {/* QR platba */}
-        <Card>
-          <CardHeader>
-            <CardTitle>QR platba</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center gap-4">
-            <Image src={qrDataUrl} alt="QR kód pro platbu" width={200} height={200} unoptimized />
-            <div className="text-sm text-center space-y-1 text-gray-600">
-              <p>
-                <span className="font-medium">Příjemce:</span> {bankName}
-              </p>
-              <p>
-                <span className="font-medium">IBAN:</span> {iban}
-              </p>
-              <p>
-                <span className="font-medium">Variabilní symbol:</span>{" "}
-                <span className="font-mono font-bold text-gray-900">{vs}</span>
-              </p>
-              <p>
-                <span className="font-medium">Částka:</span>{" "}
-                <span className="font-bold text-sky-700">{reservation.total_deposit} Kč</span>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
 
         {/* Souhrn */}
         <Card>
@@ -127,9 +87,9 @@ export default async function PotvrzeniPage({ params }: Props) {
         </Card>
 
         <p className="text-center text-sm text-gray-500">
-          Po uhrazení zálohy Vás budeme kontaktovat na e-mail{" "}
-          <strong>knizektomas3@gmail.com</strong> nebo telefon{" "}
-          <strong>+420 725 240 206</strong>.
+          Budeme Vás kontaktovat na e-mail{" "}
+          <strong>{customer.email}</strong> nebo telefon{" "}
+          <strong>{customer.phone}</strong>.
         </p>
 
         <div className="text-center">

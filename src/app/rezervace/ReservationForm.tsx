@@ -13,8 +13,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createReservation } from "@/app/actions/reservation";
 
-const DEPOSIT = 200;
-
 const CASTLE_INFO: Record<string, {
   images: string[];
   specs: { label: string; value: string }[];
@@ -300,10 +298,6 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
                     </li>
                   ))}
                 </ul>
-              </div>
-              <div className="flex justify-between py-2 text-base font-bold text-sky-700">
-                <span>Záloha k úhradě</span>
-                <span>{DEPOSIT} Kč</span>
               </div>
             </div>
             {error && <p className="text-sm text-red-600 bg-red-50 rounded p-3">{error}</p>}

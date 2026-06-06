@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { Resend } from "resend";
 import { format, parseISO } from "date-fns";
 import { cs } from "date-fns/locale";
+import { PRICE_PER_DAY, KAUCE } from "@/lib/pricing";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -15,7 +16,7 @@ export async function getBookedDays(castleId: string): Promise<string[]> {
       .from("reservation_days")
       .select("day, reservations!inner(castle_id, status)")
       .eq("reservations.castle_id", castleId)
-      .in("reservations.status", ["pending", "confirmed"]),
+      .in("reservations.status", ["pending", "confirmed", "paid"]),
     supabase.from("blocked_days").select("day"),
   ]);
 
@@ -187,8 +188,8 @@ export async function updateReservationStatus(
         .join("\n");
 
       const dayCount = days.length;
-      const rental = 1250 * dayCount;
-      const celkem = rental + 2500;
+      const rental = PRICE_PER_DAY * dayCount;
+      const celkem = rental + KAUCE;
       const dnyText = dayCount === 1 ? "den" : dayCount < 5 ? "dny" : "dní";
 
       await resend.emails.send({
@@ -210,11 +211,11 @@ export async function updateReservationStatus(
           `---`,
           `Rozpis platby:`,
           ``,
-          `Pronájem (1.250 Kč x ${dayCount} ${dnyText}) - ${rental.toLocaleString("cs")} Kč`,
-          `Vratná kauce - 2.500 Kč`,
+          `Pronájem (${PRICE_PER_DAY.toLocaleString("cs")} Kč x ${dayCount} ${dnyText}) - ${rental.toLocaleString("cs")} Kč`,
+          `Vratná kauce - ${KAUCE.toLocaleString("cs")} Kč`,
           ``,
           `Celkem uhradíte při předání: ${celkem.toLocaleString("cs")} Kč`,
-          `Kauce (2.500 Kč) bude vrácena po odevzdání hradu a kontrole stavu.`,
+          `Kauce (${KAUCE.toLocaleString("cs")} Kč) bude vrácena po odevzdání hradu a kontrole stavu.`,
           ``,
           `---`,
           `Předání a vrácení:`,

@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { createReservation } from "@/app/actions/reservation";
+import { PRICE_PER_DAY, KAUCE } from "@/lib/pricing";
 
 const CASTLE_INFO: Record<string, {
   images: string[];
@@ -134,8 +135,8 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
                         <span className="font-semibold">{castle.name}</span>
                       </div>
                       <div className="text-right text-sm">
-                        <p className="font-semibold text-gray-800">1 250 Kč/den</p>
-                        <p className="text-gray-500">Kauce: 2 500 Kč</p>
+                        <p className="font-semibold text-gray-800">{PRICE_PER_DAY.toLocaleString("cs")} Kč/den</p>
+                        <p className="text-gray-500">Kauce: {KAUCE.toLocaleString("cs")} Kč</p>
                       </div>
                       {info && (
                         <button
@@ -298,6 +299,18 @@ export default function ReservationForm({ castles, bookedDaysByCastle }: Props) 
                     </li>
                   ))}
                 </ul>
+              </div>
+              <div className="flex justify-between py-1 border-b">
+                <span className="text-gray-500">Pronájem ({selectedDays.length}× {PRICE_PER_DAY.toLocaleString("cs")} Kč)</span>
+                <span className="font-medium">{(selectedDays.length * PRICE_PER_DAY).toLocaleString("cs")} Kč</span>
+              </div>
+              <div className="flex justify-between py-1 border-b">
+                <span className="text-gray-500">Vratná kauce</span>
+                <span className="font-medium">{KAUCE.toLocaleString("cs")} Kč</span>
+              </div>
+              <div className="flex justify-between py-2 text-base font-bold text-sky-700">
+                <span>Celkem při předání</span>
+                <span>{(selectedDays.length * PRICE_PER_DAY + KAUCE).toLocaleString("cs")} Kč</span>
               </div>
             </div>
             {error && <p className="text-sm text-red-600 bg-red-50 rounded p-3">{error}</p>}
